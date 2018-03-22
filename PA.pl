@@ -53,3 +53,15 @@ parejaCasada(omar, sara).
 parejaCasada(hector, maria).
 
 suegra(Suegra, X):- esMujer(Suegra), parejaCasada(Suegro, Suegra), padresDe(Suegro, Suegra, Pareja), parejaCasada(Pareja, X).
+
+/* Ejercicio 9 */
+suma(X, Y, Suma) :- Suma is X+Y.
+
+producto(X, Y, Producto) :- Producto is X*Y.
+
+factorial(0, Resu):- Resu is 1.
+factorial(X, Resu):- XX is X - 1, factorial(XX, R), Resu is X * R. 
+
+fibonacci(0, Resu):- Resu is 0.
+fibonacci(1, Resu):- Resu is 1.
+fibonacci(X, Resu):- Y is X - 1, Z is X - 2, fibonacci(Y, RY), fibonacci(Z, RZ), Resu is RY + RZ.
