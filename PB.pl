@@ -82,3 +82,57 @@ moverUnoADerechaAux([X | L], [X | LU] , U):- moverUnoADerechaAux(L,LU, U).
 moverUnoAIzquierda([], []).
 moverUnoAIzquierda([X | L], LRes):- concatenar(L, [X], LRes).
 
+% 6)
+% a)
+conjuntoValido([]).
+conjuntoValido([X | L]) :- noExiste(X, L), conjuntoValido(L).
+
+noExiste(X, []).
+noExiste(X, [X | _]):- false.
+noExiste(X, [A | L]):- A \= X, noExiste(X, L).
+
+% b)
+pertenece(X, L):- buscar(X, L).
+
+% c)
+agregarAConjunto(X, C, R):- conjuntoValido(C), noExiste(X, C), addLast(X, C, R).
+
+% d)
+% PREGUNTAR
+unirConjuntos(C1, C2, CR):- conjuntoValido(C1), conjuntoValido(C2), unirConjuntosAux(C1, C2, CR).
+
+unirConjuntosAux([], C2, C2).
+unirConjuntosAux([_ | C1], C2, CR):- unirConjuntos(C1, C2, CR).
+unirConjuntosAux([X | C1] , C2, [X | CR]):- noExiste(X, C2), unirConjuntos(C1, C2, CR).
+
+
+/*8. Confeccionar un predicado Prolog que sea capaz de determinar el tipo de argumento
+que ha recibido (i.e., si es una variable, un  ́atomo, un entero o una lista). */
+
+tipo(X):- integer(X), write("X es un entero").
+tipo(X):- var(X), write("X es una variable").
+tipo(X):- atom(X), write("X es un atomo").
+tipo(X):- is_list(X), write("X es una Lista").        
+
+/* 9. Asumiendo que se dispone de un diccionario de pares (pc, pi), donde pc es una palabra
+en castellano y pi es su equivalente en ingl ́es, implementar en Prolog un traductor de
+oraciones. Indicar claramente la convenci ́on adoptada para representar las oraciones. */
+
+% Las oraciones van a ser listas de palabras, con un predicado que las va a imprimir.
+
+rosetta(hola, hello).
+rosetta(mundo, world).
+
+traductor([]):- write(".").
+traductor([X | L]):- rosetta(Y, X), write(Y), write(" "), traductor(L).
+
+/*10. Definir predicados recursivos para ordenar:
+    a) Una lista de n ́umeros.
+    b) Una lista de palabras.
+Aclaracion ́ : representar las palabras mediante listas de letras. */
+
+%a) 
+ordenarNums([], []).
+ordenarNums([X | []], [X]).
+ordenarNums([X, Y | L], [X | LR]):- X < Y, ordenarNums([Y | L], LR).
+ordenarNums([X, Y | L], [Y | LR]):- X > Y, ordenarNums([X | L], LR). 
