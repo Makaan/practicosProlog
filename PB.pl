@@ -101,6 +101,10 @@ agregarAConjunto(X, C, R):- conjuntoValido(C), noExiste(X, C), addLast(X, C, R).
 % PREGUNTAR
 unirConjuntos(C1, C2, CR):- conjuntoValido(C1), conjuntoValido(C2), unirConjuntosAux(C1, C2, CR).
 
+%dif(+C1, +C2, -D)
+dif(C1, C2, D):- findall(X, (pertenece(X, C1), noExiste(X, C2)), D).
+
+
 unirConjuntosAux([], C2, C2).
 unirConjuntosAux([_ | C1], C2, CR):- unirConjuntos(C1, C2, CR).
 unirConjuntosAux([X | C1] , C2, [X | CR]):- noExiste(X, C2), unirConjuntos(C1, C2, CR).
@@ -136,3 +140,30 @@ ordenarNums([], []).
 ordenarNums([X | []], [X]).
 ordenarNums([X, Y | L], [X | LR]):- X < Y, ordenarNums([Y | L], LR).
 ordenarNums([X, Y | L], [Y | LR]):- X > Y, ordenarNums([X | L], LR). 
+
+/*20. Adoptando una representaci ́on razonable para  ́arboles binarios de b ́usqueda, implementar
+a trav ́es de predicados Prolog las siguientes relaciones:
+
+a) crearArbolVacio(X): retorna en X un  ́arbol vac ́ıo.
+b) insertar(E, A, NA): inserta el elemento E en el  ́arbol A, retornando el nuevo  ́arbol
+en NA (asumir que si el elemento a ser insertado ya pertenece al  ́arbol, entonces se
+retorna el mismo  ́arbol).
+c) eliminar(E, A, NA): elimina el elemento E del  ́arbol A, retornando el nuevo  ́arbol en
+NA. Se debe manejar apropiadamente la eliminaci ́on de elementos tanto en las hojas
+del  ́arbol como en sus nodos internos.
+d) altura(A, X): retorna en X la altura del  ́arbol A.
+e) balanceado(A): determina si el  ́arbol A est ́a balanceado o no.
+*/
+
+crearArbolVacio(#).
+
+insertar(E, #, bin(E, #, #)).
+insertar(E, bin(P, #, #), bin(P, bin(E, #, #), #)):- E < P.
+insertar(E, bin(P, #, #), bin(P, #, bin(E, #, #))):- E > P.
+insertar(E, bin(P, HI, HD), bin(P, HIN, HD)):- E < P,  insertar(E, HI, HIN). 
+insertar(E, bin(P, HI, HD), bin(P, HI, HDN)):- E > P,  insertar(E, HD, HDN). 
+
+eliminar(E, bin(E, #, #), #).
+eliminar(E, bin(E, HI, #), HI).
+eliminar(E, bin(E, #, HD), HD).
+eliminar(E, bin(P, HI, HD), bin(P, HI, HD)):- E < P, eliminar(P, HI, HD).
