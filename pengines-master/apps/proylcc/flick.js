@@ -97,6 +97,7 @@ function handleCreate() {
 function handleSuccess(response) {
     gridData = response.data[0].Grid;
     turns++;
+    console.log(response.data[0].Grid);
     if (cellElems == null)
         createGridElems(gridData.length, gridData[0].length);
     for (let row = 0; row < gridData.length; row++)
@@ -128,7 +129,8 @@ function createGridElems(numOfRows, numOfCols) {
 
 function handleColorClick(color) {
     var s = "flick(" + Pengine.stringify(gridData) + "," + colorToProlog(color) + ",Grid)";
-    pengine.ask(s)
+    console.log(s);
+    pengine.ask(s);
 }
 
 /**
