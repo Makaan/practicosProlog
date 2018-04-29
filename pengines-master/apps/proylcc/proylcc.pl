@@ -56,11 +56,28 @@ grid(3, [
 		]).
 
 grid(4, [
-		[y,y,y,y],
-		[y,y,y,y],
-		[y,y,y,y],
-		[y,y,y,y]
-		]).
+		[a,y,y,y,y,y,y,y,y,y,y,y,y,y],
+		[y,y,y,y,y,y,y,y,y,y,y,y,y,y],
+		[y,a,y,y,y,y,y,y,y,y,y,y,y,y],
+		[y,y,y,y,y,y,y,y,y,y,y,y,y,y],
+		[y,y,y,a,y,y,y,y,y,y,y,y,y,y],
+		[y,y,y,y,y,y,y,y,a,y,y,y,y,y],
+		[y,y,y,y,y,y,y,y,y,y,y,y,y,y],
+		[y,y,y,y,y,y,y,y,y,y,y,y,y,y],
+		[y,y,y,y,y,y,y,y,y,y,y,y,y,y],
+		[y,y,y,y,y,y,y,y,y,y,y,y,y,y],
+		[y,y,y,y,y,y,y,y,y,y,y,y,y,y],
+		[y,y,y,y,y,y,y,y,y,y,y,y,y,y],
+		[y,y,y,y,y,y,y,y,b,y,y,y,y,y],
+		[y,y,y,y,y,y,y,y,y,y,y,y,y,y]
+	]).
+
+grid(5, [
+    [a,a,c,a],
+    [c,a,a,a],
+    [a,a,c,b],
+    [a,c,c,a]
+]).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -71,64 +88,71 @@ grid(4, [
 flick(Grid,Color,FGrid):-
 	Grid = [F|_],
 	F = [X|_],
-	pintar(X,Color,Grid,0,0,FGrid).
-	%FGrid = [[Color|Xs]|Fs].
+	pintar(Color, X, 0, 0, Grid, FGrid).
 
-pintar(Ant,Color,Grid,X,Y,Rta):-
-	getColorEnPos(Grid,X,Y,PosCol),
-	Ant=PosCol,
-	cambiarColorEnPosicion(Color,Grid,X,Y,RtaA),
-	pintarContorno(Ant,Color,RtaA,X,Y,Rta).
+pintar(_, _, X, Y, M, M):- 
+	X < 0;
+	X > 13; 
+	Y < 0; 
+	Y > 13.
 
-pintar(Ant,_,Grid,X,Y,Rta):-
-	getColorEnPos(Grid,X,Y,PosCol),
-	Ant\=PosCol,
-	Rta=Grid.
+pintar(_, ColorEsquina, X, Y, M, M):-
+	getColorEn(X, Y, M, ColorEnXY),
+	ColorEnXY \= ColorEsquina.
 
-pintar(_,_,[G|Grid],X,Y,[G|Grid]):-
-	X<0;
-	Y<0;
-	largo([G|Grid],LF),	X>=LF;
-	largo(G,LC),	X>=LC.
+pintar(CNuevo, ColorEsquina, X, Y, M, MND):- 
+	getColorEn(X, Y, M, ColorEnXY),
+	ColorEnXY = ColorEsquina, pintarEnPos(CNuevo, X, Y, M, MN),
+	XMas is X + 1, pintar(CNuevo, ColorEsquina, XMas, Y, MN, MNA),
+	XMen is X - 1, pintar(CNuevo, ColorEsquina, XMen, Y, MNA, MNB),
+	YMas is Y + 1, pintar(CNuevo, ColorEsquina, X, YMas, MNB, MNC),
+	YMen is Y - 1, pintar(CNuevo, ColorEsquina, X, YMen, MNC, MND).
 
-pintarContorno(Ant,Color,RtaA,X,Y,Rta):-
-	Xmen is X-1,Ymen is Y-1,
-	Xmas is X+1,Ymas is Y+1,
-	pintar(Ant,Color,RtaA,Xmen,Y,RtaB),
-	pintar(Ant,Color,RtaB,Xmas,Y,RtaC),
-	pintar(Ant,Color,RtaC,X,Ymen,RtaD),
-	pintar(Ant,Color,RtaD,X,Ymas,Rta).
+%getColorEn(_, _, _, []).
+getColorEn(X, 0, [Fila | _], Color):- getColorEnX(X, Fila, Color).
+getColorEn(X, Y, [_ | M], Color):- X >= 0, Y>= 0, YA is Y - 1, getColorEn(X, YA, M, Color).
 
-getColorEnPos([G|_],X,0,Rta):-
-	getColorEnLista(G,X,Rta).
+%getColorEnX(_, [], _).
+getColorEnX(0, [Color | _], Color).
+getColorEnX(X, [_ | Fila], Color):- X >= 0, XA is X - 1, getColorEnX(XA, Fila, Color).
 
-getColorEnPos([_|Grid],X,Y,Rta):-
-	YY is Y-1,
-	getColorEnPos(Grid,X,YY,Rta).
+pintarEnPos(CNuevo, X, 0, [Fila | M], [FilaNueva | M]) :- pintarEnX(CNuevo, X, Fila, FilaNueva).
+pintarEnPos(CNuevo, X, Y, [Fila | M], [Fila | MNueva]) :- YA is Y - 1, pintarEnPos(CNuevo, X, YA, M, MNueva).
 
-getColorEnLista([L|_],0,L).
-getColorEnLista([_|Ls],X,Rta):-
-	XX is X-1,
-	getColorEnLista(Ls,XX,Rta).
+pintarEnX(CNuevo, 0, [_ | Fila], [CNuevo | Fila]).
+pintarEnX(CNuevo, X, [Elem | Fila], [Elem | FilaNueva]):- XA is X - 1, pintarEnX(CNuevo, XA, Fila, FilaNueva). 
 
-reemplazarEnLista(Color,[_|Ls],0,[Color|Ls]).
-reemplazarEnLista(Color,[L|Ls],X,[L|Rta]):-
-	XX is X-1,
-	reemplazarEnLista(Color,Ls,XX,Rta).
 
-cambiarColorEnPosicion(Color,[G|Grid],X,0,[Rta|Grid]):-
-	reemplazarEnLista(Color,G,X,Rta).
+ayuda(_, [], []).
+ayuda(Grid, [Color | LC], [NColor | LN]):- 
+	Grid = [Fila | _],
+	Fila = [X | _],
+	borde(Color, X, 0, 0, Grid, NColor),
+	ayuda(Grid, LC, LN).
 
-cambiarColorEnPosicion(Color,[G|Grid],X,Y,[G|Rta]):-
-	YY is Y-1,
-	cambiarColorEnPosicion(Color,Grid,X,YY,Rta).
 
-%metodo para calcular el largo de una lista
-largo([],0).
-largo([_|Xs],Rta):- largo(Xs,Rtaa),
-	Rta is Rtaa+1.
+borde(_, _, X, Y, _, 0):-
+	X < 0;
+	X > 3;
+	Y < 0; 
+	Y > 3.
 
-%metodo para calcular las dimenciones de la grilla
-dimenciones([G|Grid],Ancho,Alto):-
-	largo([G|Grid],Ancho),
-	largo(G, Alto).
+borde(CNuevo, ColorAct, X, Y, M, N):- getColorEn(X, Y, M, ColorEnXY),
+		ColorEnXY = ColorAct,
+		XMas is X + 1, borde(CNuevo, ColorAct, XMas, Y, M, NA),
+		XMen is X - 1, borde(CNuevo, ColorAct, XMen, Y, M, NB),
+		YMas is Y + 1, borde(CNuevo, ColorAct, X, YMas, M, NC),
+		YMen is Y - 1, borde(CNuevo, ColorAct, X, YMen, M, ND),
+		N is NA + NB + NC + ND.
+
+borde(CNuevo, ColorAct, X, Y, M, N):- getColorEn(X, Y, M, ColorEnXY),
+	ColorEnXY = CNuevo,
+	XMas is X + 1, borde(CNuevo, ColorAct, XMas, Y, M, NA),
+	XMen is X - 1, borde(CNuevo, ColorAct, XMen, Y, M, NB),
+	YMas is Y + 1, borde(CNuevo, ColorAct, X, YMas, M, NC),
+	YMen is Y - 1, borde(CNuevo, ColorAct, X, YMen, M, ND),
+	N is NA + NB + NC + ND + 1.
+
+borde(_, ColorAct, X, Y, M, 0):-
+		getColorEn(X, Y, M, ColorEnXY),
+		ColorEnXY \= ColorAct.

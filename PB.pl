@@ -82,6 +82,15 @@ moverUnoADerechaAux([X | L], [X | LU] , U):- moverUnoADerechaAux(L,LU, U).
 moverUnoAIzquierda([], []).
 moverUnoAIzquierda([X | L], LRes):- concatenar(L, [X], LRes).
 
+derecha(L, 0, L).
+derecha(L, N, LR):- NA is N - 1, moverUnoADerecha(L, LRA), derecha(LRA, NA, LR).
+
+
+izquierda(L, N, LR):- izquierdaAux(L, [], N, LR).
+izquierdaAux([X | L], LA, N, LR):- NA is N-1, izquierdaAux(L, [X | LA], NA, LR).
+izquierdaAux(L, LA, 0, LR):- invertir(LA, LAI), concatenar(L, LAI, LR).
+
+
 % 6)
 % a)
 conjuntoValido([]).

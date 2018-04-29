@@ -1,6 +1,7 @@
-// Reference to object provided by pengines.js library which interfaces with Pengines server (Prolog-engine)
+// Reference to object provided by pengineGrids.js library which interfaces with pengineGrids server (Prolog-engine)
 // by making query requests and receiving answers.
-var pengine;
+var pengineGrid;
+var pengineDif;
 // Bidimensional array representing grid configuration.
 var gridData;
 // Bidimensional array with grid cells elements.
@@ -18,12 +19,12 @@ var turnsElem;
  */
 
 const colors = Object.freeze({
-    RED : "red",
-    VIOLET : "violet",
-    PINK : "pink",
-    GREEN : "green",
-    BLUE : "blue",
-    YELLOW : "yellow"
+    RED: "red",
+    VIOLET: "violet",
+    PINK: "pink",
+    GREEN: "green",
+    BLUE: "blue",
+    YELLOW: "yellow"
 });
 
 /*
@@ -55,17 +56,23 @@ function colorToCss(color) {
 }
 
 /**
-* Initialization function. Requests to server, through pengines.js library, 
-* the creation of a Pengine instance, which will run Prolog code server-side.
-*/
+ * Initialization function. Requests to server, through pengineGrids.js library, 
+ * the creation of a pengineGrid instance, which will run Prolog code server-side.
+ */
 
 function init() {
     turnsElem = document.getElementById("turnsNum");
-    pengine = new Pengine({
+    pengineGrid = new Pengine({
         server: "http://localhost:3030/pengine",
         application: "proylcc",
         oncreate: handleCreate,
         onsuccess: handleSuccess,
+        destroy: false
+    });
+    pengineDif = new Pengine({
+        server: "http://localhost:3030/pengine",
+        application: "proylcc",
+        onsuccess: handleSuccessDif,
         destroy: false
     });
 
@@ -83,15 +90,15 @@ function init() {
 }
 
 /**
- * Callback for Pengine server creation
+ * Callback for pengineGrid server creation
  */
 
 function handleCreate() {
-    pengine.ask('grid(1, Grid)');
+    pengineGrid.ask('grid(2, Grid)');
 }
 
 /**
- * Callback for successful response received from Pengines server
+ * Callback for successful response received from pengineGrids server
  */
 
 function handleSuccess(response) {
@@ -100,10 +107,18 @@ function handleSuccess(response) {
     console.log(response.data[0].Grid);
     if (cellElems == null)
         createGridElems(gridData.length, gridData[0].length);
+
     for (let row = 0; row < gridData.length; row++)
         for (let col = 0; col < gridData[row].length; col++)
             cellElems[row][col].style.backgroundColor = colorToCss(colorFromProlog(gridData[row][col]));
+
+
     turnsElem.innerHTML = turns;
+
+}
+
+function handleSuccessDif(response) {
+    console.log(response);
 }
 
 /**
@@ -124,18 +139,27 @@ function createGridElems(numOfRows, numOfCols) {
 }
 
 /**
- * Handler for color click. Ask query to Pengines server.
+ * Handler for color click. Ask query to pengineGrids server.
  */
 
 function handleColorClick(color) {
     var s = "flick(" + Pengine.stringify(gridData) + "," + colorToProlog(color) + ",Grid)";
     console.log(s);
-    pengine.ask(s);
+    pengineGrid.ask(s);
+}
+
+function ayuda() {
+    pengineDif.ask("asd(1)");
+    /*
+    for (color of colors) {
+        pengineGrid.ask("flick(" + pengineGrid.stringify(gridData) + "," + colorToProlog(color) + ",Grid)");
+    }
+    */
 }
 
 /**
-* Call init function after window loaded to ensure all HTML was created before
-* accessing and manipulating it.
-*/
+ * Call init function after window loaded to ensure all HTML was created before
+ * accessing and manipulating it.
+ */
 
 window.onload = init;

@@ -1,20 +1,53 @@
 <html lang="en">
-    <head>
-        <script src="/vendor/jquery/jquery-2.0.3.min.js"></script>
-        <script src="/pengine/pengines.js"></script>
-        <script src="flick.js"></script>
-        <link rel="stylesheet" href="flick.css">
-    </head>
-    <body>
-        <div class="mainPanel">
-            <div class="leftBar">
-                <div id="buttonsPanel" class="buttonsPanel"></div>
-                <div class="turnsPanel">
-                    <div class="turnsLab">Turns</div>
-                    <div id="turnsNum">0</div>
-                </div>
-            </div>
-            <div id="grid"></div>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+
+    <link rel="stylesheet" href="flick.css">
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper light-blue darken-2">
+            <a href="#" class="brand-logo center">Color Flick</a>
         </div>
-    </body>
+    </nav>
+    <div class="main  light-blue lighten-4 ">
+        <div class="row">
+            <div class="col s3 leftBar ">
+                <div id="buttonsPanel" class="buttonsPanel"></div>
+                <div class="row">
+                    <div class="col s8 center turnsLab">
+                        <h4>Turns</h4>
+                    </div>
+                    <h4 class="col s4 left" id="turnsNum">0</h4>
+                </div>
+                <div class=" row ">
+                    <div class="col s12 center ">
+                        <a class="waves-effect waves-light btn light-blue darken-2 " onclick="ayuda() ">Ayuda</a>
+                    </div>
+                    <div class="col s12 center ">
+                        <p id="textoAyuda "></p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col s9 light-blue lighten-5 center ">
+                <div id="grid" class="center-align "></div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <script src="/vendor/jquery/jquery-2.0.3.min.js "></script>
+    <script src="/pengine/pengines.js "></script>
+    <script src="flick.js "></script>
+    <script type="text/javascript " src="js/materialize.min.js "></script>
+</body>
+
 </html>
