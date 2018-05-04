@@ -88,25 +88,26 @@ grid(5, [
 flick(Grid,Color,FGrid):-
 	Grid = [F|_],
 	F = [X|_],
-	pintar(Color, X, 0, 0, Grid, FGrid).
+	pintar(Color, X, 0, 0, Grid, FGrid, _).
 
-pintar(_, _, X, Y, M, M):- 
+pintar(_, _, X, Y, M, M, 0):- 
 	X < 0;
 	X > 13; 
 	Y < 0; 
 	Y > 13.
 
-pintar(_, ColorEsquina, X, Y, M, M):-
+pintar(_, ColorEsquina, X, Y, M, M, 0):-
 	getColorEn(X, Y, M, ColorEnXY),
 	ColorEnXY \= ColorEsquina.
 
-pintar(CNuevo, ColorEsquina, X, Y, M, MND):- 
-	getColorEn(X, Y, M, ColorEnXY),
-	ColorEnXY = ColorEsquina, pintarEnPos(CNuevo, X, Y, M, MN),
-	XMas is X + 1, pintar(CNuevo, ColorEsquina, XMas, Y, MN, MNA),
-	XMen is X - 1, pintar(CNuevo, ColorEsquina, XMen, Y, MNA, MNB),
-	YMas is Y + 1, pintar(CNuevo, ColorEsquina, X, YMas, MNB, MNC),
-	YMen is Y - 1, pintar(CNuevo, ColorEsquina, X, YMen, MNC, MND).
+pintar(CNuevo, ColorEsquina, X, Y, M, MND, Cont):- 
+	getColorEn(X, Y, M, ColorEsquina),
+	pintarEnPos(CNuevo, X, Y, M, MN),
+	XMas is X + 1, pintar(CNuevo, ColorEsquina, XMas, Y, MN, MNA, ContA),
+	XMen is X - 1, pintar(CNuevo, ColorEsquina, XMen, Y, MNA, MNB, ContB),
+	YMas is Y + 1, pintar(CNuevo, ColorEsquina, X, YMas, MNB, MNC, ContC),
+	YMen is Y - 1, pintar(CNuevo, ColorEsquina, X, YMen, MNC, MND, ContD),
+	Cont is ContA + ContB + ContC + ContD + 1.
 
 %getColorEn(_, _, _, []).
 getColorEn(X, 0, [Fila | _], Color):- getColorEnX(X, Fila, Color).
@@ -127,32 +128,7 @@ ayuda(_, [], []).
 ayuda(Grid, [Color | LC], [NColor | LN]):- 
 	Grid = [Fila | _],
 	Fila = [X | _],
-	borde(Color, X, 0, 0, Grid, NColor),
+	pintar(Color, X, 0, 0, Grid, FGrid, N),
+	pintar(X, Color, 0, 0, FGrid, _, M),
+	NColor is M - N,
 	ayuda(Grid, LC, LN).
-
-
-borde(_, _, X, Y, _, 0):-
-	X < 0;
-	X > 3;
-	Y < 0; 
-	Y > 3.
-
-borde(CNuevo, ColorAct, X, Y, M, N):- getColorEn(X, Y, M, ColorEnXY),
-		ColorEnXY = ColorAct,
-		XMas is X + 1, borde(CNuevo, ColorAct, XMas, Y, M, NA),
-		XMen is X - 1, borde(CNuevo, ColorAct, XMen, Y, M, NB),
-		YMas is Y + 1, borde(CNuevo, ColorAct, X, YMas, M, NC),
-		YMen is Y - 1, borde(CNuevo, ColorAct, X, YMen, M, ND),
-		N is NA + NB + NC + ND.
-
-borde(CNuevo, ColorAct, X, Y, M, N):- getColorEn(X, Y, M, ColorEnXY),
-	ColorEnXY = CNuevo,
-	XMas is X + 1, borde(CNuevo, ColorAct, XMas, Y, M, NA),
-	XMen is X - 1, borde(CNuevo, ColorAct, XMen, Y, M, NB),
-	YMas is Y + 1, borde(CNuevo, ColorAct, X, YMas, M, NC),
-	YMen is Y - 1, borde(CNuevo, ColorAct, X, YMen, M, ND),
-	N is NA + NB + NC + ND + 1.
-
-borde(_, ColorAct, X, Y, M, 0):-
-		getColorEn(X, Y, M, ColorEnXY),
-		ColorEnXY \= ColorAct.
