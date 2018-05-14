@@ -96,6 +96,8 @@ pintar(_, _, X, Y, M, M, 0):-
 	Y < 0; 
 	Y > 13.
 
+pintar(Color, Color, _, _, M, M, 0).
+
 pintar(_, ColorEsquina, X, Y, M, M, 0):-
 	getColorEn(X, Y, M, ColorEnXY),
 	ColorEnXY \= ColorEsquina.
@@ -134,20 +136,27 @@ ayuda(Grid, [Color | LC], [(NColor, Color) | LN]):-
 	ayuda(Grid, LC, LN).
 
 ayudaDosJugadas(_, [], []).
-ayudaDosJugadas(Grid, LC, LN):- 
+ayudaDosJugadas(Grid, LC, Max):- 
 	ayuda(Grid, LC, LNA),
-	ayudaDosJugadasAux(Grid, LC, LNA, LN).
+	ayudaDosJugadasAux(Grid, LC, LNA, LN),
+	write(LN),
+	write("\n"),
+	max_member(Max, LN).
 
 ayudaDosJugadasAux(_, _, [], []).
 ayudaDosJugadasAux(Grid, LC, [(Num, Color) | LNA], [MaxDos | LN]):-
 	Grid = [Fila | _],
 	Fila = [X | _],
 	pintar(Color, X, 0, 0, Grid, FGrid, _),
-	ayuda(FGrid, LC, LNC), 
+	ayuda(FGrid, LC, LNC),
+	write((Num, Color)),
+	write(" "),
+	write(LNC),
+	write("\n"),
 	max_member(Max, LNC),
 	Max = (Num2, Color2),
 	NumMaxDos is Num + Num2,
-	MaxDos = (NumMaxDos, Color, Color2),
+	MaxDos = (NumMaxDos, Color, Color2),	
 	ayudaDosJugadasAux(Grid, LC, LNA, LN).
 
 
