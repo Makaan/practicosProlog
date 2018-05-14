@@ -21,16 +21,33 @@
                 <div id="buttonsPanel" class="buttonsPanel"></div>
                 <div class="row">
                     <div class="col s8 center turnsLab">
-                        <h4>Turns</h4>
+                        <h4>Turnos:</h4>
                     </div>
                     <h4 class="col s4 left" id="turnsNum">0</h4>
                 </div>
                 <div class=" row ">
                     <div class="col s12 center ">
-                        <a class="waves-effect waves-light btn light-blue darken-2 " onclick="ayuda() ">Ayuda</a>
-                    </div>
-                    <div class="col s12 center ">
-                        <p id="textoAyuda "></p>
+
+                        <ul class="collapsible">
+                            <li>
+                                <div class="collapsible-header light-blue">
+                                    <h5 class="center-align">Mostrar Ayuda</h5>
+                                </div>
+                                <div class="collapsible-body light-blue lighten-1">
+                                    <div class="row center-align">
+                                        <h5 class="center-align">Mejor siguiente jugada: </h5>
+                                        <button class="colorBtn" id="btnUnaJugada"></button>
+                                    </div>
+                                    <div class="row">
+                                        <h5 class="center-align">Mejores siguientes dos jugadas: </h5>
+                                        <button class="colorBtn" id="btnDosJugadas1"></button>
+                                        <button class="colorBtn" id="btnDosJugadas2"></button>
+                                    </div>
+                                    <h5 id="ayudaUnaJugada"></h5>
+                                    <h5 id="ayudaDosJugadas"></h5>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -45,9 +62,10 @@
     </div>
 
     <script src="/vendor/jquery/jquery-2.0.3.min.js "></script>
+    <script type="text/javascript " src="js/materialize.min.js "></script>
     <script src="/pengine/pengines.js "></script>
     <script src="flick.js "></script>
-    <script type="text/javascript " src="js/materialize.min.js "></script>
+
 </body>
 
 </html>

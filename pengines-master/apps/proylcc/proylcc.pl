@@ -126,6 +126,10 @@ pintarEnX(CNuevo, 0, [_ | Fila], [CNuevo | Fila]).
 pintarEnX(CNuevo, X, [Elem | Fila], [Elem | FilaNueva]):- XA is X - 1, pintarEnX(CNuevo, XA, Fila, FilaNueva). 
 
 
+ayudaUnaJugada(Grid, LC, Max):-
+	ayuda(Grid, LC, LN),
+	max_member(Max, LN).
+
 ayuda(_, [], []).
 ayuda(Grid, [Color | LC], [(NColor, Color) | LN]):- 
 	Grid = [Fila | _],
@@ -139,8 +143,6 @@ ayudaDosJugadas(_, [], []).
 ayudaDosJugadas(Grid, LC, Max):- 
 	ayuda(Grid, LC, LNA),
 	ayudaDosJugadasAux(Grid, LC, LNA, LN),
-	write(LN),
-	write("\n"),
 	max_member(Max, LN).
 
 ayudaDosJugadasAux(_, _, [], []).
@@ -149,10 +151,6 @@ ayudaDosJugadasAux(Grid, LC, [(Num, Color) | LNA], [MaxDos | LN]):-
 	Fila = [X | _],
 	pintar(Color, X, 0, 0, Grid, FGrid, _),
 	ayuda(FGrid, LC, LNC),
-	write((Num, Color)),
-	write(" "),
-	write(LNC),
-	write("\n"),
 	max_member(Max, LNC),
 	Max = (Num2, Color2),
 	NumMaxDos is Num + Num2,

@@ -1,7 +1,8 @@
 // Reference to object provided by pengineGrids.js library which interfaces with pengineGrids server (Prolog-engine)
 // by making query requests and receiving answers.
 var pengineGrid;
-var pengineDif;
+var pengineAyudaUnaJugada;
+var pengineAyudaDosJugadas;
 // Bidimensional array representing grid configuration.
 var gridData;
 // Bidimensional array with grid cells elements.
@@ -33,6 +34,11 @@ const colors = Object.freeze({
 
 function colorToProlog(color) {
     return colors[color].charAt(0);
+}
+
+function colorsToProlog() {
+    var toReturn = ["r", "v", "p", "g", "b", "y"];
+    return toReturn;
 }
 
 /*
@@ -69,12 +75,19 @@ function init() {
         onsuccess: handleSuccess,
         destroy: false
     });
-    pengineDif = new Pengine({
+    pengineAyudaUnaJugada = new Pengine({
         server: "http://localhost:3030/pengine",
         application: "proylcc",
-        onsuccess: handleSuccessDif,
+        onsuccess: handleSuccessAyudaUnaJugada,
         destroy: false
     });
+    pengineAyudaDosJugadas = new Pengine({
+        server: "http://localhost:3030/pengine",
+        application: "proylcc",
+        onsuccess: handleSuccessAyudaDosJugadas,
+        destroy: false
+    });
+
 
     var buttonsPanelElem = document.getElementById("buttonsPanel");
 
@@ -95,6 +108,8 @@ function init() {
 
 function handleCreate() {
     pengineGrid.ask('grid(2, Grid)');
+    ayudaUnaJugada();
+    ayudaDosJugadas();
 }
 
 /**
@@ -104,7 +119,6 @@ function handleCreate() {
 function handleSuccess(response) {
     gridData = response.data[0].Grid;
     turns++;
-    console.log(response.data[0].Grid);
     if (cellElems == null)
         createGridElems(gridData.length, gridData[0].length);
 
@@ -114,11 +128,25 @@ function handleSuccess(response) {
 
 
     turnsElem.innerHTML = turns;
+    ayudaUnaJugada();
+    ayudaDosJugadas();
 
 }
 
-function handleSuccessDif(response) {
-    console.log(response);
+function handleSuccessAyudaUnaJugada(response) {
+    var data = response.data[0].Ayuda.args[1];
+    var color = colorFromProlog(data);
+    console.log(response.data[0].Ayuda.args[1]);
+    console.log(color);
+
+    $("#btnUnaJugada").css("backgroundColor", color);
+}
+
+function handleSuccessAyudaDosJugadas(response) {
+    var color1 = colorFromProlog(response.data[0].Ayuda.args[1].args[0]);
+    var color2 = colorFromProlog(response.data[0].Ayuda.args[1].args[1]);
+    $("#btnDosJugadas1").css("backgroundColor", color1);
+    $("#btnDosJugadas2").css("backgroundColor", color2);
 }
 
 /**
@@ -148,14 +176,21 @@ function handleColorClick(color) {
     pengineGrid.ask(s);
 }
 
-function ayuda() {
-    pengineDif.ask("asd(1)");
-    /*
-    for (color of colors) {
-        pengineGrid.ask("flick(" + pengineGrid.stringify(gridData) + "," + colorToProlog(color) + ",Grid)");
-    }
-    */
+function ayudaUnaJugada() {
+    pengineAyudaUnaJugada.ask("ayudaUnaJugada(" + Pengine.stringify(gridData) + "," + Pengine.stringify(colorsToProlog()) + ",Ayuda)");
 }
+
+function ayudaDosJugadas() {
+    pengineAyudaDosJugadas.ask("ayudaDosJugadas(" + Pengine.stringify(gridData) + "," + Pengine.stringify(colorsToProlog()) + ",Ayuda)");
+}
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.collapsible');
+    var instances = M.Collapsible.init(elems, {});
+});
+
+
 
 /**
  * Call init function after window loaded to ensure all HTML was created before
