@@ -24,3 +24,9 @@
 .turnsLab {
     text-transform: uppercase;
 }
+
+.icon {
+    height: 100%;
+    color: white;
+    fill: currentColor;
+}

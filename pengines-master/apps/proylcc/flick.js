@@ -138,13 +138,14 @@ function handleSuccessAyudaUnaJugada(response) {
     var color = colorFromProlog(data);
     console.log(response.data[0].Ayuda.args[1]);
     console.log(color);
-
+    $("#cantCuadrosUnaJugada").text(response.data[0].Ayuda.args[0]);
     $("#btnUnaJugada").css("backgroundColor", color);
 }
 
 function handleSuccessAyudaDosJugadas(response) {
     var color1 = colorFromProlog(response.data[0].Ayuda.args[1].args[0]);
     var color2 = colorFromProlog(response.data[0].Ayuda.args[1].args[1]);
+    $("#cantCuadrosDosJugadas").text(response.data[0].Ayuda.args[0]);
     $("#btnDosJugadas1").css("backgroundColor", color1);
     $("#btnDosJugadas2").css("backgroundColor", color2);
 }
