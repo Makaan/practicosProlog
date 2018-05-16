@@ -129,8 +129,13 @@ function handleSuccess(response) {
     for (let row = 0; row < gridData.length; row++)
         for (let col = 0; col < gridData[row].length; col++) {
             cellElems[row][col].classList.remove("color-" + colorFromProlog(gridData[row][col]));
+            cellElems[row][col].classList.remove("animacion");
             gridData[row][col] = gridAct[row][col];
             cellElems[row][col].classList.add("color-" + colorFromProlog(gridData[row][col]));
+            $(cellElems[row][col]).addClass('animacion');
+            setTimeout(function() {
+                $(cellElems[row][col]).removeClass('animacion');
+            }, 800);
         }
 
 
@@ -179,6 +184,7 @@ function createGridElems(numOfRows, numOfCols) {
         cellElems[row] = [];
         for (let col = 0; col < numOfCols; col++) {
             var cellElem = document.createElement("div");
+            cellElem.classList.add("colorBtn")
             gridElem.appendChild(cellElem);
             cellElems[row][col] = cellElem;
         }

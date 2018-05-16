@@ -19,6 +19,8 @@
     width: 40px;
     border: none;
     cursor: pointer;
+    transition: background-color 0s ease;
+    transition-delay: 0.4s;
 }
 
 .turnsLab {
@@ -33,30 +35,40 @@
 
 .color-BLUE {
     background-color: blue;
-    transition: background-color 0.5s ease;
 }
 
 .color-GREEN {
     background-color: green;
-    transition: background-color 0.5s ease;
 }
 
 .color-YELLOW {
     background-color: yellow;
-    transition: background-color 0.5s ease;
 }
 
 .color-VIOLET {
     background-color: violet;
-    transition: background-color 0.5s ease;
 }
 
 .color-RED {
     background-color: red;
-    transition: background-color 0.5s ease;
 }
 
 .color-PINK {
     background-color: pink;
-    transition: background-color 0.5s ease;
+}
+
+.animacion {
+    animation: test 0.8s ease-in-out;
+}
+
+@keyframes test {
+    from {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
 }
