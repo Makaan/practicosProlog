@@ -26,7 +26,37 @@
 }
 
 .icon {
-    height: 100%;
+    height: 80%;
     color: white;
     fill: currentColor;
+}
+
+.color-BLUE {
+    background-color: blue;
+    transition: background-color 0.5s ease;
+}
+
+.color-GREEN {
+    background-color: green;
+    transition: background-color 0.5s ease;
+}
+
+.color-YELLOW {
+    background-color: yellow;
+    transition: background-color 0.5s ease;
+}
+
+.color-VIOLET {
+    background-color: violet;
+    transition: background-color 0.5s ease;
+}
+
+.color-RED {
+    background-color: red;
+    transition: background-color 0.5s ease;
+}
+
+.color-PINK {
+    background-color: pink;
+    transition: background-color 0.5s ease;
 }

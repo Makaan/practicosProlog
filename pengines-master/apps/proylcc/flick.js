@@ -93,13 +93,14 @@ function init() {
 
     for (let color in colors) {
         var buttonElem = document.createElement("button");
-        buttonElem.className = "colorBtn";
+        buttonElem.classList.add("colorBtn");
         buttonElem.style.backgroundColor = colorToCss(color);
         buttonElem.addEventListener("click", function(e) {
             handleColorClick(color);
         });
         buttonsPanelElem.appendChild(buttonElem);
     }
+
 }
 
 /**
@@ -107,7 +108,7 @@ function init() {
  */
 
 function handleCreate() {
-    pengineGrid.ask('grid(2, Grid)');
+    pengineGrid.ask('grid(1, Grid)');
     ayudaUnaJugada();
     ayudaDosJugadas();
 }
@@ -117,14 +118,20 @@ function handleCreate() {
  */
 
 function handleSuccess(response) {
-    gridData = response.data[0].Grid;
+    gridAct = response.data[0].Grid;
+
     turns++;
-    if (cellElems == null)
-        createGridElems(gridData.length, gridData[0].length);
+    if (cellElems == null) {
+        createGridElems(gridAct.length, gridAct[0].length);
+        gridData = gridAct;
+    }
 
     for (let row = 0; row < gridData.length; row++)
-        for (let col = 0; col < gridData[row].length; col++)
-            cellElems[row][col].style.backgroundColor = colorToCss(colorFromProlog(gridData[row][col]));
+        for (let col = 0; col < gridData[row].length; col++) {
+            cellElems[row][col].classList.remove("color-" + colorFromProlog(gridData[row][col]));
+            gridData[row][col] = gridAct[row][col];
+            cellElems[row][col].classList.add("color-" + colorFromProlog(gridData[row][col]));
+        }
 
 
     turnsElem.innerHTML = turns;
@@ -134,12 +141,23 @@ function handleSuccess(response) {
 }
 
 function handleSuccessAyudaUnaJugada(response) {
-    var data = response.data[0].Ayuda.args[1];
-    var color = colorFromProlog(data);
-    console.log(response.data[0].Ayuda.args[1]);
-    console.log(color);
-    $("#cantCuadrosUnaJugada").text(response.data[0].Ayuda.args[0]);
-    $("#btnUnaJugada").css("backgroundColor", color);
+    console.log(response.data[0].Ayuda[0]);
+    $("#cuadrosPintadosUnaJugada").empty();
+    var arrColores = response.data[0].Ayuda;
+    console.log(arrColores);
+    for (color of arrColores) {
+        console.log(color.args[1]);
+        if (color.args[1] != gridData[0][0]) {
+            var buttonElem = document.createElement("button");
+            buttonElem.innerHTML = color.args[0];
+            buttonElem.className = "colorBtn";
+            buttonElem.style.marginRight = 5;
+            buttonElem.style.backgroundColor = colorToCss(colorFromProlog(color.args[1]));
+        }
+
+        $("#cuadrosPintadosUnaJugada").append(buttonElem);
+    }
+
 }
 
 function handleSuccessAyudaDosJugadas(response) {
@@ -178,18 +196,22 @@ function handleColorClick(color) {
 }
 
 function ayudaUnaJugada() {
-    pengineAyudaUnaJugada.ask("ayudaUnaJugada(" + Pengine.stringify(gridData) + "," + Pengine.stringify(colorsToProlog()) + ",Ayuda)");
+    pengineAyudaUnaJugada.ask("ayuda(" + Pengine.stringify(gridData) + "," + Pengine.stringify(colorsToProlog()) + ",Ayuda)");
 }
 
 function ayudaDosJugadas() {
     pengineAyudaDosJugadas.ask("ayudaDosJugadas(" + Pengine.stringify(gridData) + "," + Pengine.stringify(colorsToProlog()) + ",Ayuda)");
 }
 
+function abrirSideNav() {
+    M.Sidenav.getInstance(document.querySelector(".sidenav")).open();
+}
 
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.collapsible');
-    var instances = M.Collapsible.init(elems, {});
-});
+function cambiarGrilla(n) {
+    pengineGrid.ask('grid(' + n + ', Grid)');
+}
+
+
 
 
 
@@ -199,3 +221,8 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 
 window.onload = init;
+
+$(document).ready(function() {
+    $('.sidenav').sidenav();
+    $('.collapsible').collapsible();
+});

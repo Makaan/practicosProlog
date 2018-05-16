@@ -12,19 +12,37 @@
 <body>
     <nav>
         <div class="nav-wrapper light-blue darken-2">
-            <img class="icon" src="assets/menu.svg"/>
+            <img class="icon" src="assets/menu.svg" onclick="abrirSideNav()" />
             <a href="#" class="brand-logo center">Color Flick</a>
         </div>
     </nav>
+
+    <ul id="slide-out" class="sidenav">
+
+        <li>
+            <h5 class="center-align">Menu</li>
+        <li>
+            <blockquote>Aqui puede elegir otra grilla</blockquote>
+        </li>
+        <li>
+            <div class="divider"></div>
+        </li>
+        <li><a class="waves-effect" onclick="cambiarGrilla(1)">Grilla #1</a></li>
+        <li><a class="waves-effect" onclick="cambiarGrilla(2)">Grilla #2</a></li>
+        <li><a class="waves-effect" onclick="cambiarGrilla(3)">Grilla #3</a></li>
+        <li><a class="waves-effect" onclick="cambiarGrilla(4)">Grilla #4</a></li>
+    </ul>
+
+
     <div class="main  light-blue lighten-4 ">
         <div class="row">
             <div class="col s3 leftBar ">
                 <div id="buttonsPanel" class="buttonsPanel"></div>
                 <div class="row">
                     <div class="col s8 center turnsLab">
-                        <h4>Turnos:</h4>
+                        <h5>Turnos:</h5>
                     </div>
-                    <h4 class="col s4 left" id="turnsNum">0</h4>
+                    <h5 class="col s4 left" id="turnsNum">0</h5>
                 </div>
                 <div class=" row ">
                     <div class="col s12 center ">
@@ -32,14 +50,12 @@
                         <ul class="collapsible">
                             <li>
                                 <div class="collapsible-header light-blue">
-                                    <h5 class="center-align">Mostrar Ayuda</h5>
+                                    <h6 class="center-align">Mostrar Ayuda</h6>
                                 </div>
                                 <div class="collapsible-body light-blue lighten-1">
                                     <div class="row center-align">
-                                        <h6 class="center-align">Mejor siguiente jugada: </h6>
-                                        <button class="colorBtn" id="btnUnaJugada"></button>
-                                        <h6 class="center-align">Cantidad de cuadros cubiertos: </h6>
-                                        <h6 id="cantCuadrosUnaJugada"></h6>
+                                        <h6 class="center-align">Cuadros pintados en siguiente jugada: </h6>
+                                        <div class="row" id="cuadrosPintadosUnaJugada"></div>
                                     </div>
                                     <div class="row">
                                         <h6 class="center-align">Mejores siguientes dos jugadas: </h6>

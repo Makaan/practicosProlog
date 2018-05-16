@@ -125,11 +125,6 @@ pintarEnPos(CNuevo, X, Y, [Fila | M], [Fila | MNueva]) :- YA is Y - 1, pintarEnP
 pintarEnX(CNuevo, 0, [_ | Fila], [CNuevo | Fila]).
 pintarEnX(CNuevo, X, [Elem | Fila], [Elem | FilaNueva]):- XA is X - 1, pintarEnX(CNuevo, XA, Fila, FilaNueva). 
 
-
-ayudaUnaJugada(Grid, LC, Max):-
-	ayuda(Grid, LC, LN),
-	max_member(Max, LN).
-
 ayuda(_, [], []).
 ayuda(Grid, [Color | LC], [(NColor, Color) | LN]):- 
 	Grid = [Fila | _],
