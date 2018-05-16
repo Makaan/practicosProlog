@@ -215,6 +215,7 @@ function abrirSideNav() {
 
 function cambiarGrilla(n) {
     pengineGrid.ask('grid(' + n + ', Grid)');
+    M.Sidenav.getInstance(document.querySelector(".sidenav")).close();
 }
 
 
