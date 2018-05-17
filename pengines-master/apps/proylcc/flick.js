@@ -124,19 +124,29 @@ function handleSuccess(response) {
     if (cellElems == null) {
         createGridElems(gridAct.length, gridAct[0].length);
         gridData = gridAct;
+        for (let row = 0; row < gridData.length; row++) {
+            for (let col = 0; col < gridData[row].length; col++) {
+                cellElems[row][col].classList.add("color-" + colorFromProlog(gridData[row][col]));
+            }
+        }
     }
 
-    for (let row = 0; row < gridData.length; row++)
+    for (let row = 0; row < gridData.length; row++) {
         for (let col = 0; col < gridData[row].length; col++) {
-            cellElems[row][col].classList.remove("color-" + colorFromProlog(gridData[row][col]));
-            cellElems[row][col].classList.remove("animacion");
-            gridData[row][col] = gridAct[row][col];
-            cellElems[row][col].classList.add("color-" + colorFromProlog(gridData[row][col]));
-            $(cellElems[row][col]).addClass('animacion');
-            setTimeout(function() {
-                $(cellElems[row][col]).removeClass('animacion');
-            }, 800);
+            if (gridData[row][col] != gridAct[row][col]) {
+                cellElems[row][col].classList.remove("color-" + colorFromProlog(gridData[row][col]));
+                cellElems[row][col].classList.remove("animacion");
+
+                gridData[row][col] = gridAct[row][col];
+
+                cellElems[row][col].classList.add("color-" + colorFromProlog(gridData[row][col]));
+                $(cellElems[row][col]).addClass('animacion');
+                setTimeout(() => {
+                    $(cellElems[row][col]).removeClass('animacion');
+                }, 800);
+            }
         }
+    }
 
 
     turnsElem.innerHTML = turns;
