@@ -111,7 +111,7 @@ function init() {
  */
 
 function handleCreate() {
-    pengineGrid.ask('grid(5, Grid)');
+    pengineGrid.ask('grid(1, Grid)');
     ayudaUnaJugada();
     ayudaDosJugadas();
 }
@@ -181,12 +181,12 @@ function handleSuccessAyudaUnaJugada(response) {
 
 }
 
-function handleSuccessAyudaDosJugadas(response) {  
-    
+function handleSuccessAyudaDosJugadas(response) {
+
     $("#cuadrosPintadosDosJugadas").empty();
     var arrColores = response.data[0].Ayuda;
     for (color of arrColores) {
-        if(color.args[1].args[0] != gridData[0][0]) {
+        if (color.args[1].args[0] != gridData[0][0]) {
             var div = document.createElement("div");
             div.classList.add("row");
             $(div).appendTo("#cuadrosPintadosDosJugadas");
@@ -195,17 +195,17 @@ function handleSuccessAyudaDosJugadas(response) {
                 buttonElem.className = "colorBtn";
                 buttonElem.style.marginRight = 5;
                 buttonElem.style.backgroundColor = colorToCss(colorFromProlog(color.args[1].args[0]));
-    
+
                 $(div).append(buttonElem);
-    
+
                 buttonElem = document.createElement("button");
                 buttonElem.className = "colorBtn";
                 buttonElem.style.marginRight = 5;
                 buttonElem.style.backgroundColor = colorToCss(colorFromProlog(color.args[1].args[1]));
-    
+
                 $(div).append(buttonElem);
-                $(div).append("= "+color.args[0]);
-            }      
+                $(div).append("= " + color.args[0]);
+            }
         }
     }
     /*

@@ -72,27 +72,6 @@ grid(4, [
 		[y,p,g,b,r,p,v,g,v,y,v,r,b,p]
 	]).
 
-grid(5, [
-    [y,y,y,y,y,y,y,y,y,y,y,y,y,g],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
-	[r,y,y,y,y,y,y,y,y,y,y,y,y,g],
-	[r,r,y,y,y,y,y,y,y,y,y,y,y,g],
-	[r,r,r,y,y,y,y,y,y,y,y,y,y,g],
-	[v,v,y,b,y,y,y,y,v,v,y,b,y,g],
-	[b,b,b,g,g,g,y,y,v,v,y,b,y,g],
-	[g,g,g,g,g,g,g,g,g,g,g,g,g,g]
-]).
-
-grid(6, [
-	[a,a,a],
-	[a,a,a],
-	[a,a,b]]).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
