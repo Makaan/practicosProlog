@@ -10,6 +10,15 @@
 </head>
 
 <body>
+    <div class="overlay row valign-wrapper blanco" id="overlay">
+        <div class="col s12 ">
+            <h1 class="center-align">Ganaste!</h1>
+            <div onclick="nuevoJuego()" class="caja col s4 offset-s4">
+                <h4 class="center-align">Pulsa aqui para jugar otra vez</h5>
+            </div>
+        </div>
+    </div>
+
     <nav>
         <div class="nav-wrapper light-blue darken-2">
             <img class="icon" src="assets/menu.svg" onclick="abrirSideNav()" />
@@ -32,6 +41,8 @@
         <li><a class="waves-effect" onclick="cambiarGrilla(3)">Grilla #3</a></li>
         <li><a class="waves-effect" onclick="cambiarGrilla(4)">Grilla #4</a></li>
     </ul>
+
+
 
 
     <div class="main  light-blue lighten-4 ">

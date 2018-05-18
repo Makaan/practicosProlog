@@ -67,6 +67,7 @@ function colorToCss(color) {
  */
 
 function init() {
+    $("#overlay").hide();
     turnsElem = document.getElementById("turnsNum");
     pengineGrid = new Pengine({
         server: "http://localhost:3030/pengine",
@@ -94,12 +95,14 @@ function init() {
     for (let color in colors) {
         var buttonElem = document.createElement("button");
         buttonElem.classList.add("colorBtn");
+        buttonElem.classList.add("waves-effect");
         buttonElem.style.backgroundColor = colorToCss(color);
         buttonElem.addEventListener("click", function(e) {
             handleColorClick(color);
         });
         buttonsPanelElem.appendChild(buttonElem);
     }
+
 
 }
 
@@ -150,18 +153,20 @@ function handleSuccess(response) {
 
 
     turnsElem.innerHTML = turns;
-    ayudaUnaJugada();
-    ayudaDosJugadas();
+    if (!victoria()) {
+        ayudaUnaJugada();
+        ayudaDosJugadas();
+    }
+
+
+
 
 }
 
 function handleSuccessAyudaUnaJugada(response) {
-    console.log(response.data[0].Ayuda[0]);
     $("#cuadrosPintadosUnaJugada").empty();
     var arrColores = response.data[0].Ayuda;
-    console.log(arrColores);
     for (color of arrColores) {
-        console.log(color.args[1]);
         if (color.args[1] != gridData[0][0]) {
             var buttonElem = document.createElement("button");
             buttonElem.innerHTML = color.args[0];
@@ -207,7 +212,6 @@ function createGridElems(numOfRows, numOfCols) {
 
 function handleColorClick(color) {
     var s = "flick(" + Pengine.stringify(gridData) + "," + colorToProlog(color) + ",Grid)";
-    console.log(s);
     pengineGrid.ask(s);
 }
 
@@ -228,6 +232,30 @@ function cambiarGrilla(n) {
     M.Sidenav.getInstance(document.querySelector(".sidenav")).close();
     turns = -1;
 }
+
+function nuevoJuego() {
+    $("#overlay").hide();
+    pengine.ask("grid(1,M)");
+}
+
+function victoria() {
+    var victoria = true;
+    var esquina = gridData[0][0];
+    for (let row = 0; victoria && row < gridData.length; row++) {
+        for (let col = 0; victoria && col < gridData[row].length; col++) {
+            if (gridData[row][col] != esquina) {
+                victoria = false;
+            }
+        }
+    }
+    if (victoria) {
+        $("#overlay").show();
+        pengine.ask("grid(1,M)");
+    }
+    return victoria;
+}
+
+
 
 
 
