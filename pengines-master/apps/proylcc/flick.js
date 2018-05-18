@@ -235,7 +235,7 @@ function cambiarGrilla(n) {
 
 function nuevoJuego() {
     $("#overlay").hide();
-    pengine.ask("grid(1,M)");
+    pengineGrid.ask('grid(1, Grid)');
 }
 
 function victoria() {
@@ -250,7 +250,6 @@ function victoria() {
     }
     if (victoria) {
         $("#overlay").show();
-        pengine.ask("grid(1,M)");
     }
     return victoria;
 }
