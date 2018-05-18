@@ -73,20 +73,20 @@ grid(4, [
 	]).
 
 grid(5, [
-    [y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,y],
-	[y,y,y,y,y,y,y,y,y,y,y,y,g]
+    [y,y,y,y,y,y,y,y,y,y,y,y,y,g],
+	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
+	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
+	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
+	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
+	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
+	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
+	[y,y,y,y,y,y,y,y,y,y,y,y,y,g],
+	[r,y,y,y,y,y,y,y,y,y,y,y,y,g],
+	[r,r,y,y,y,y,y,y,y,y,y,y,y,g],
+	[r,r,r,y,y,y,y,y,y,y,y,y,y,g],
+	[v,v,y,b,y,y,y,y,v,v,y,b,y,g],
+	[b,b,b,g,g,g,y,y,v,v,y,b,y,g],
+	[g,g,g,g,g,g,g,g,g,g,g,g,g,g]
 ]).
 
 grid(6, [
@@ -142,14 +142,14 @@ pintar(CNuevo, ColorEsquina, X, Y, M, MNueva, Cont):-
 getColorEn(X, 0, [Fila | _], Color):- getColorEnX(X, Fila, Color).
 
 % En el caso general controla que la posicion no tenga coordenadas negativas.
-getColorEn(X, Y, [_ | M], Color):- X > -1, Y> -1, YA is Y - 1, getColorEn(X, YA, M, Color).
+getColorEn(X, Y, [_ | M], Color):- X >= 0, Y >= 0, YA is Y - 1, getColorEn(X, YA, M, Color).
 
 
 % getColorEnX(+X, +Fila, -Color).
 % getColorEnX retorna el color en la posicion X de la columna (lista).
 getColorEnX(0, [Color | _], Color).
 % En el caso general controla que la posicion no tenga X negativo.
-getColorEnX(X, [_ | Fila], Color):- X > -1, XA is X - 1, getColorEnX(XA, Fila, Color).
+getColorEnX(X, [_ | Fila], Color):- X >= 0, XA is X - 1, getColorEnX(XA, Fila, Color).
 
 
 % pintarEnPos(+CNuevo, +X, +Y, +M, -MNueva).
@@ -177,17 +177,16 @@ ayuda(Grid, [Color | LC], [(NColor, Color) | LN]):-
 	ayuda(Grid, LC, LN).
 
 
-% ayudaDosJugadas(+Grid, +LC, -Max).
-% ayudaDosJugadas retorna la mejor jugada, en cantidad de cuadros pintados, al realizar dos pintadas consecutivas de cualquier combinacion de colores.
+% ayudaDosJugadas(+Grid, +LC, -LN).
+% ayudaDosJugadas retorna para cada color las mejores jugadas, en cantidad de cuadros pintados, al realizar dos pintadas consecutivas.
 ayudaDosJugadas(_, [], []).
 
 % en el caso general se pide la lista de jugadas posibles con un solo color usando "ayuda".
-ayudaDosJugadas(Grid, LC, Max):-
+ayudaDosJugadas(Grid, LC, LN):-
 	ayuda(Grid, LC, LNA),
 	% el metodo auxiliar va a tomar el resultado de ayuda y va a hacer lo mismo con cada uno de los elementos de la lista resultado.
-	ayudaDosJugadasAux(Grid, LC, LNA, LN),
-	% quiero retornar solo el mayor.
-	max_member(Max, LN).
+	ayudaDosJugadasAux(Grid, LC, LNA, LN).
+
 
 % ayudaDosJugadasAux(+Grid, +LC, +LNA, -LN).
 % ayudaDosJugadasAux toma una lista de jugadas y su cantidad total de cuadros pintados para pedir "ayuda" sobre cada una
