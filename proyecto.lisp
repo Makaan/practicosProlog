@@ -37,6 +37,41 @@
     )
 )
 
+;3. Definir una funci ́on Lisp que a partir de un conjunto S, representado a trav ́es de una
+;lista, calcule el conjunto P(S) de todos sus subconjuntos posibles.
+
+(defun partes(L) 
+    (cond
+        ((null L)
+            '()
+        )
+        (T 
+            (combinar (car L) (partes (cdr L)))
+            
+        )
+    )
+)
+
+(defun combinar(E L)
+    (cond 
+        ((null (cdr L))
+            (list 
+                (cons E (car L))
+                (car L)
+            )
+        )
+        (T 
+            (append
+                (list 
+                    (cons E (car L))
+                    (car L)
+                )
+                (combinar E (cdr L))
+            )
+        )
+    )
+)
+
 
 ;Retorna la longitud de una lista
 (defun longitud(L)
